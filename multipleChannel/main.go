@@ -13,6 +13,7 @@ import "log"
 import "errors"
 
 func main() {
+<<<<<<< HEAD
 	//創造一個channel,使用bufferchannel,異部狀態
 	outChan := make(chan string, 100)
 	//創造一個channel使用bufferchannel,異部狀態
@@ -30,18 +31,34 @@ func main() {
 			//
 			time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
 			
+=======
+	outChan := make(chan string, 100)
+	errChan := make(chan error, 100)
+	finishChan := make(chan struct{})
+	wg := sync.WaitGroup{}
+	wg.Add(20)
+	for i := 0; i < 20; i++ {
+		go func(val int, wg *sync.WaitGroup, out chan string, err chan error) {
+			time.Sleep(time.Duration(rand.Int31n(1000)) * time.Millisecond)
+>>>>>>> origin/master
 			out <- fmt.Sprintf("finished job id: %d", val)
 
 			if val == 15 {
 				err <- errors.New("fail job in 15")
 			}
+<<<<<<< HEAD
 			//任務完成,將wg隊伍中的數量-1,其實就是wg.Add(-1)
+=======
+>>>>>>> origin/master
 			wg.Done()
 		}(i, &wg, outChan, errChan)
 	}
 
 	go func() {
+<<<<<<< HEAD
 		//發生阻塞,等待所有wg隊伍中的任務執行完成後就會解除
+=======
+>>>>>>> origin/master
 		wg.Wait()
 		close(finishChan)
 	}()
@@ -64,6 +81,7 @@ Loop:
 	}
 
 }
+<<<<<<< HEAD
 
 
 2019/11/18 02:24:29 finished job id: 2
@@ -79,3 +97,5 @@ Loop:
 2019/11/18 02:24:29 finished job id: 4
 2019/11/18 02:24:29 timeout
 
+=======
+>>>>>>> origin/master
